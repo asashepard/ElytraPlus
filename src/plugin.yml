@@ -1,0 +1,5 @@
+name: ElytraPlus
+main: com.gmail.creepycucumber1.elytraplus.ElytraPlus
+version: 1.0-SNAPSHOT
+api-version: 1.17
+author: longbread
