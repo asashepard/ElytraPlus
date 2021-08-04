@@ -45,7 +45,7 @@ public class EventManager implements Listener {
     public void onDurabilityDecrease(PlayerItemDamageEvent e) {
         if (e.getItem().getItemMeta().hasCustomModelData() &&
                 e.getItem().getItemMeta().getCustomModelData() == 1) { //amethyst
-            if (e.getItem().getDurability() > 3) {
+            if (e.getItem().getDurability() < (short) 429) {
                 e.setDamage(2);
             }
         }
