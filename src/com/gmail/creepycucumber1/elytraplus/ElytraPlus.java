@@ -86,7 +86,7 @@ public class ElytraPlus extends JavaPlugin {
                                 ap.setVelocity(ap.getVelocity().multiply(multiplier));
 
                             } else if (ap.getVelocity().length() < 2.6) { //facing up and/or going up still small increase
-                                ap.setVelocity(ap.getVelocity().multiply(1.008));
+                                ap.setVelocity(ap.getVelocity().multiply(1.003));
                             }
                         }
                     }
