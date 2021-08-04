@@ -82,11 +82,11 @@ public class ElytraPlus extends JavaPlugin {
 
                                 if (pitch > -70 && ap.getVelocity().getY() < 0 && ap.getVelocity().length() < 2.6) {
 
-                                    multiplier = 1.01 + 0.09 * (Math.abs(pitch) * 0.5); }
+                                    multiplier = 1.01 + 0.085 * (Math.abs(pitch) * 0.5); }
                                 ap.setVelocity(ap.getVelocity().multiply(multiplier));
 
                             } else if (ap.getVelocity().length() < 2.6) { //facing up and/or going up still small increase
-                                ap.setVelocity(ap.getVelocity().multiply(1.003));
+                                ap.setVelocity(ap.getVelocity().multiply(1.001));
                             }
                         }
                     }
