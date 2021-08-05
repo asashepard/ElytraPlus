@@ -32,8 +32,8 @@ public class AmethystElytra {
 
         ShapedRecipe aelytraR = new ShapedRecipe(NamespacedKey.minecraft("aelytra"), aelytra);
         aelytraR.shape("FAF",
-                       "F F",
-                       "F F");
+                       "FAF",
+                       "FAF");
         aelytraR.setIngredient('F', Fragment.fragment.getType()); aelytraR.setIngredient('A', Material.AMETHYST_CLUSTER);
         try {
             Bukkit.getServer().addRecipe(aelytraR);
