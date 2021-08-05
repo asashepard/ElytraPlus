@@ -43,9 +43,9 @@ public class NetheriteElytra {
 
         ShapedRecipe nelytraR = new ShapedRecipe(NamespacedKey.minecraft("nelytra"), nelytra);
         nelytraR.shape("FNF",
-                       "F F",
-                       "F F");
-        nelytraR.setIngredient('F', Fragment.fragment.getType()); nelytraR.setIngredient('N', Material.NETHERITE_BLOCK);
+                       "FNF",
+                       "FNF");
+        nelytraR.setIngredient('F', Fragment.fragment.getType()); nelytraR.setIngredient('N', Material.NETHERITE_INGOT);
         try {
             Bukkit.getServer().addRecipe(nelytraR);
         } catch (IllegalStateException ignored) { }
