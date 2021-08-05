@@ -26,7 +26,6 @@ public class ElytraPlus extends JavaPlugin {
         Fragment.init();
         AmethystElytra.init();
         NetheriteElytra.init();
-        BoomElytra.init();
         Elytra.init();
 
         getLogger().info("ElytraPlus has been enabled!");
@@ -61,13 +60,6 @@ public class ElytraPlus extends JavaPlugin {
                             p.getInventory().getChestplate().getItemMeta().getCustomModelData() == 2) { //netherite
                         if (p.isGliding()) {
                             nflight.add(p);
-                        }
-                    }
-                    //BOOM
-                    if (p.getInventory().getChestplate() != null && p.getInventory().getChestplate().getItemMeta().hasCustomModelData() &&
-                            p.getInventory().getChestplate().getItemMeta().getCustomModelData() == 3) { //boom
-                        if (p.isGliding()) {
-                            bflight.add(p);
                         }
                     }
 
@@ -153,20 +145,6 @@ public class ElytraPlus extends JavaPlugin {
                         l.setZ(l.getZ() - deltaz);
 
                         Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(56, 53, 50), 1);
-                        l.getWorld().spawnParticle(Particle.REDSTONE, l.getX(), l.getY(), l.getZ(), part, 0.2, 0.2, 0.2, dust);
-                    }
-                    //BOOM
-                    else if (p.getInventory().getChestplate() != null && p.getInventory().getChestplate().getItemMeta().hasCustomModelData() &&
-                            p.getInventory().getChestplate().getItemMeta().getCustomModelData() == 3) { //boom
-
-                        //add particle
-                        Location l = p.getLocation();
-                        l.setY(l.getY() + deltay);
-                        //behind the player
-                        l.setX(l.getX() - deltax);
-                        l.setZ(l.getZ() - deltaz);
-
-                        Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(77, 176, 76), 1);
                         l.getWorld().spawnParticle(Particle.REDSTONE, l.getX(), l.getY(), l.getZ(), part, 0.2, 0.2, 0.2, dust);
                     }
                 }
