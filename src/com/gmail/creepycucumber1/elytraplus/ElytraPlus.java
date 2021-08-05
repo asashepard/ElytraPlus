@@ -45,7 +45,6 @@ public class ElytraPlus extends JavaPlugin {
 
                 ArrayList<Player> aflight = new ArrayList<>();
                 ArrayList<Player> nflight = new ArrayList<>();
-                ArrayList<Player> bflight = new ArrayList<>();
 
                 for (Player p : plugin.getServer().getOnlinePlayers()) {
                     //AMETHYST
