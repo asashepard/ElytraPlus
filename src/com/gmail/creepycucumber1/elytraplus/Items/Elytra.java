@@ -18,8 +18,8 @@ public class Elytra {
 
         ShapedRecipe elytraR = new ShapedRecipe(NamespacedKey.minecraft("elytra"), elytra);
         elytraR.shape("FPF",
-                      "F F",
-                      "F F");
+                      "FPF",
+                      "FPF");
         elytraR.setIngredient('F', Fragment.fragment.getType()); elytraR.setIngredient('P', Material.POPPED_CHORUS_FRUIT);
         try {
             Bukkit.getServer().addRecipe(elytraR);
