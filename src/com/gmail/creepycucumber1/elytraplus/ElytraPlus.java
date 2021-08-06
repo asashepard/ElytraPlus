@@ -69,13 +69,16 @@ public class ElytraPlus extends JavaPlugin {
                         for (Player ap : aflight) {
                             double pitch = ap.getLocation().getDirection().getY();
                             //requirements: facing down, going down but not too much, speed is slow enough and fast enough
-                            if (pitch < 0 && ap.getVelocity().length() > 0.5 && ap.getVelocity().length() < (Math.abs(pitch) + 0.5) * 2) { //flatter angles have lower max for multiplication
+                            if (pitch < 0) {
 
-                                if (pitch > -70 && ap.getVelocity().getY() < 0 && ap.getVelocity().length() < 2.6) {
+                                if (pitch > -70 && ap.getVelocity().getY() < 0 && ap.getVelocity().length() < 2.6 &&
+                                        ap.getVelocity().length() > 0.5 && ap.getVelocity().length() < (Math.abs(pitch) + 0.5) * 2) { //flatter angles have lower max for multiplication
 
                                     multiplier = 1.01 + 0.085 * (Math.abs(pitch) * 0.5); }
                                 ap.setVelocity(ap.getVelocity().multiply(multiplier));
 
+                            } else if (ap.getVelocity().length() < 2.6) { //facing up and/or going up still small increase
+                                ap.setVelocity(ap.getVelocity().multiply(1.00005 + 0.00025 * pitch));
                             }
                         }
                     }
