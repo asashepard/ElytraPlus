@@ -5,17 +5,19 @@ import com.gmail.creepycucumber1.elytraplus.Items.Elytra;
 import com.gmail.creepycucumber1.elytraplus.Items.Fragment;
 import com.gmail.creepycucumber1.elytraplus.Items.NetheriteElytra;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -27,20 +29,26 @@ public class EventManager implements Listener {
         this.plugin = instance;
     }
 
-    //on dragon death, drop 1-2 wing fragments
     private static Random rand = new Random();
 
+    //on dragon death, drop 1-2 wing fragments
     @EventHandler
     public void onDragonDeath(EntityDeathEvent e) {
-        World world_the_end = plugin.getServer().getWorld("world_the_end");
-        if (world_the_end != null) {
-            int i = rand.nextInt(2); // 0-1
+        if(e.getEntity() instanceof EnderDragon) {
+            World world_the_end = plugin.getServer().getWorld("world_the_end");
+            if (world_the_end != null) {
+                int max = 4;
+                int min = 2;
+                int amt = rand.nextInt(max + 1 - min) + min;
 
-            Item frag = world_the_end.dropItem(new Location(world_the_end, 0.5f, 100f, 0.5f), new ItemStack(Fragment.fragment.getType(), i + 1));
-            frag.setVelocity(new Vector(0, 0, 0));
+                for(int i = 0; i < amt; i++) {
+                    Item frag = world_the_end.dropItem(new Location(world_the_end, 0.5f, 100f, 0.5f), Fragment.fragment);
+                    frag.setVelocity(new Vector(0, 0, 0));
+                }
 
-        } else {
-            plugin.getLogger().info("Unable to locate world 'world_the_end' whilst attempting to handle Ender Dragon death; ignoring");
+            } else {
+                plugin.getLogger().info("Unable to locate world 'world_the_end' whilst attempting to handle Ender Dragon death; ignoring");
+            }
         }
     }
 
@@ -139,6 +147,60 @@ public class EventManager implements Listener {
                     || !items[8].getItemMeta().hasCustomModelData() || items[0].getItemMeta().getCustomModelData() != 2) {
                 e.getInventory().setResult(new ItemStack(Material.AIR));
             }
+        }
+    }
+}
+
+//throwable fireballs via essence
+    @EventHandler
+    public void onRightClickEssence(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (e.getItem() != null && e.getItem().getType().equals(Material.IRON_NUGGET) &&
+                    e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasCustomModelData() && e.getItem().getItemMeta().getCustomModelData() == 1) {
+                p.launchProjectile(Fireball.class).setVelocity(p.getLocation().getDirection().multiply(2)
+                        .add(new Vector((rand.nextInt(20 + 1 + 20) - 20) * 0.01,
+                                (rand.nextInt(20 + 1 + 20) - 20) * 0.01,
+                                (rand.nextInt(20 + 1 + 20) - 20) * 0.01)));
+                e.getItem().setAmount(e.getItem().getAmount() - 1);
+                p.updateInventory();
+            }
+        }
+    }
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent e) {
+        if(e.getEntity().getShooter() instanceof Player && e.getEntityType().equals(EntityType.FIREBALL)) {
+
+            try {
+                Location l = e.getHitEntity().getLocation();
+                List<Entity> entities = (List<Entity>) l.getWorld().getNearbyEntities(l, 5, 5, 5);
+                for(Entity c : entities) {
+                    Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
+                    c.setVelocity(velocity.multiply(1.5));
+                }
+                Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(185, 90, 219), 3);
+                l.getWorld().spawnParticle(Particle.REDSTONE, l.getX(), l.getY(), l.getZ(), 200, 2, 2, 2, dust);
+                l.getWorld().playSound(l, Sound.ENTITY_ENDER_DRAGON_FLAP, 10, 1);
+
+            } catch (Exception exception) {
+                Location l = e.getHitBlock().getLocation();
+                List<Entity> entities = (List<Entity>) l.getWorld().getNearbyEntities(l, 5, 5, 5);
+                for(Entity c : entities) {
+                    Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
+                    c.setVelocity(velocity.multiply(1.5));
+                }
+                Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(185, 90, 219), 3);
+                l.getWorld().spawnParticle(Particle.REDSTONE, l.getX(), l.getY(), l.getZ(), 200, 2, 2, 2, dust);
+                l.getWorld().playSound(l, Sound.ENTITY_ENDER_DRAGON_FLAP, 10, 1);
+            }
+        }
+    }
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent e) {
+        if(e.getEntity() instanceof Fireball && ((Fireball) e.getEntity()).getShooter() instanceof Player) {
+            ((Fireball) e.getEntity()).setIsIncendiary(false);
+            ((Fireball) e.getEntity()).setYield(0F);
+            e.setCancelled(true);
         }
     }
 }
