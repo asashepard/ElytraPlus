@@ -175,8 +175,17 @@ public class EventManager implements Listener {
                 Location l = e.getHitEntity().getLocation();
                 List<Entity> entities = (List<Entity>) l.getWorld().getNearbyEntities(l, 5, 5, 5);
                 for(Entity c : entities) {
-                    Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
-                    c.setVelocity(velocity.multiply(1.5));
+                    if(c instanceof LivingEntity cl) {
+                        double health = cl.getHealth();
+                        List<Double> oldHealth = new ArrayList<>();
+                        oldHealth.add(health);
+                        cl.damage(0.01, (Entity) e.getEntity().getShooter()); //check if source can damage entity by applying damage, comparing
+                        if(cl.getHealth() != oldHealth.get(0)) { //if player can damage entity, apply velocity and heal entity
+                            Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
+                            c.setVelocity(velocity.multiply(1.5));
+                            cl.setHealth(cl.getHealth() + 0.01);
+                        }
+                    }
                 }
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(185, 90, 219), 3);
                 l.getWorld().spawnParticle(Particle.REDSTONE, l.getX(), l.getY(), l.getZ(), 200, 2, 2, 2, dust);
@@ -186,8 +195,17 @@ public class EventManager implements Listener {
                 Location l = e.getHitBlock().getLocation();
                 List<Entity> entities = (List<Entity>) l.getWorld().getNearbyEntities(l, 5, 5, 5);
                 for(Entity c : entities) {
-                    Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
-                    c.setVelocity(velocity.multiply(1.5));
+                    if(c instanceof LivingEntity cl) {
+                        double health = cl.getHealth();
+                        List<Double> oldHealth = new ArrayList<>();
+                        oldHealth.add(health);
+                        cl.damage(0.01, (Entity) e.getEntity().getShooter()); //check if source can damage entity by applying damage, comparing
+                        if(cl.getHealth() != oldHealth.get(0)) { //if player can damage entity, apply velocity and heal entity
+                            Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
+                            c.setVelocity(velocity.multiply(1.5));
+                            cl.setHealth(cl.getHealth() + 0.01);
+                        }
+                    }
                 }
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(185, 90, 219), 3);
                 l.getWorld().spawnParticle(Particle.REDSTONE, l.getX(), l.getY(), l.getZ(), 200, 2, 2, 2, dust);
