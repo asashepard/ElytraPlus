@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class Essence {
@@ -24,8 +24,11 @@ public class Essence {
         item.setItemMeta(meta);
         essence = item;
 
-        ShapelessRecipe essenceR = new ShapelessRecipe(NamespacedKey.minecraft("essence"), essence);
-        essenceR.addIngredient(5, Material.DRAGON_BREATH);
+        ShapedRecipe essenceR = new ShapedRecipe(NamespacedKey.minecraft("essence"), essence);
+        essenceR.shape(" D ",
+                       "DDD",
+                       " D ");
+        essenceR.setIngredient('D', Material.DRAGON_BREATH);
         try {
             Bukkit.getServer().addRecipe(essenceR);
         } catch (IllegalStateException ignored) { }
