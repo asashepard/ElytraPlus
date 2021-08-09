@@ -175,7 +175,7 @@ public class EventManager implements Listener {
                 Location l = e.getHitEntity().getLocation();
                 List<Entity> entities = (List<Entity>) l.getWorld().getNearbyEntities(l, 5, 5, 5);
                 for(Entity c : entities) {
-                    if(c instanceof LivingEntity cl) {
+                    if(c instanceof LivingEntity cl && !(c instanceof Player)) {
                         double health = cl.getHealth();
                         List<Double> oldHealth = new ArrayList<>();
                         oldHealth.add(health);
@@ -183,8 +183,12 @@ public class EventManager implements Listener {
                         if(cl.getHealth() != oldHealth.get(0)) { //if player can damage entity, apply velocity and heal entity
                             Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
                             c.setVelocity(velocity.multiply(1.5));
-                            cl.setHealth(cl.getHealth() + 0.01);
+                            if(!cl.isDead()) { cl.setHealth(cl.getHealth() + 0.01); }
                         }
+                    }
+                    if(c instanceof Player) {
+                        Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
+                        c.setVelocity(velocity.multiply(1.5));
                     }
                 }
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(185, 90, 219), 3);
@@ -195,7 +199,7 @@ public class EventManager implements Listener {
                 Location l = e.getHitBlock().getLocation();
                 List<Entity> entities = (List<Entity>) l.getWorld().getNearbyEntities(l, 5, 5, 5);
                 for(Entity c : entities) {
-                    if(c instanceof LivingEntity cl) {
+                    if(c instanceof LivingEntity cl && !(c instanceof Player)) {
                         double health = cl.getHealth();
                         List<Double> oldHealth = new ArrayList<>();
                         oldHealth.add(health);
@@ -203,8 +207,12 @@ public class EventManager implements Listener {
                         if(cl.getHealth() != oldHealth.get(0)) { //if player can damage entity, apply velocity and heal entity
                             Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
                             c.setVelocity(velocity.multiply(1.5));
-                            cl.setHealth(cl.getHealth() + 0.01);
+                            if(!cl.isDead()) { cl.setHealth(cl.getHealth() + 0.01); }
                         }
+                    }
+                    if(c instanceof Player) {
+                        Vector velocity = c.getLocation().toVector().subtract(l.toVector()).add(new Vector(0, 0.8, 0)).normalize();
+                        c.setVelocity(velocity.multiply(1.5));
                     }
                 }
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(185, 90, 219), 3);
